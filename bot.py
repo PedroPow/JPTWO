@@ -182,9 +182,9 @@ class PainelDivulgacao(discord.ui.View):
                 color=0xFF0000
             )
             
-        # Mantém o autor se ele existir
-        if embed_original.author:
-            embed_atualizado.set_author(name=embed_original.author.name, icon_url=embed_original.author.icon_url)
+            # CORREÇÃO: Todo esse bloco agora está devidamente alinhado DENTRO do try
+            if embed_original.author:
+                embed_atualizado.set_author(name=embed_original.author.name, icon_url=embed_original.author.icon_url)
 
             # FORÇA A MANUTENÇÃO DA THUMBNAIL, IMAGE E FOOTER DESEJADOS
             embed_atualizado.set_thumbnail(url="https://cdn.discordapp.com/attachments/1444735189765849320/1503019230910746654/GIF_PERI.gif?ex=6a09bc3d&is=6a086abd&hm=4e07820a343bdd5a497b9f021dbc6b6d52aea9f9394b15ffb18eaf771be9f2d1&")
@@ -195,13 +195,14 @@ class PainelDivulgacao(discord.ui.View):
             await msg_original.edit(embed=embed_atualizado)
             
             # Remove do banco temporário
-            del lives_ativas[interaction.user.id]
+            if interaction.user.id in lives_ativas:
+                del lives_ativas[interaction.user.id]
 
             embed_sucesso = discord.Embed(description="❌ Live Fechada com sucesso.", color=0xFF0000)
             await interaction.response.send_message(embed=embed_sucesso, ephemeral=True)
 
         except Exception as e:
-            print(e)
+            print(f"Erro ao fechar live: {e}")
             await interaction.response.send_message("Ocorreu um erro ao tentar fechar a live.", ephemeral=True)
 
     @discord.ui.button(label="Divulgar Vídeo", style=discord.ButtonStyle.gray, emoji="<:PLAY:1505319924841582693>", custom_id="btn_divulgar_video")
@@ -228,9 +229,7 @@ async def enviar_painel(ctx):
     )
 
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/1444735189765849320/1503019230910746654/GIF_PERI.gif?ex=6a09bc3d&is=6a086abd&hm=4e07820a343bdd5a497b9f021dbc6b6d52aea9f9394b15ffb18eaf771be9f2d1&")
-
     embed.set_image(url="https://cdn.discordapp.com/attachments/1444735189765849320/1505098549610811462/Criadores_JP_2.png?ex=6a0a0c81&is=6a08bb01&hm=51d6cf0ae416af4e6f37516d9a39ab6bb4f6be70166faa799f9f36acdaa74e2b&")
-
     embed.set_footer(text="Jardim Peri RP - Todos os direitos reservados", icon_url="https://cdn.discordapp.com/attachments/1444735189765849320/1505074583601025114/emoji_JP.webp?ex=6a094d6f&is=6a07fbef&hm=5bd4e53ca8c4b641133b0f855affa243f440b86cdb33410d7579215042d8eba3&")
 
     await ctx.send(embed=embed, view=PainelDivulgacao())
