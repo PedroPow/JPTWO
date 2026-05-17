@@ -24,6 +24,7 @@ lives_ativas = {}
 # RegExp para validar as plataformas permitidas
 RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com)', re.IGNORECASE)
 
+
 class Bot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
@@ -31,14 +32,22 @@ class Bot(commands.Bot):
         intents.members = True
         super().__init__(command_prefix="!", intents=intents)
 
-TOKEN = os.getenv("TOKEN_JP")
-
+    # CORREÇÃO: O on_ready agora está devidamente alinhado dentro da classe Bot
     async def on_ready(self):
         print(f"🤖 Bot de divulgação online como {self.user}!")
         # Registra a View persistente para os botões continuarem funcionando se o bot reiniciar
+        # NOTA: Certifique-se de que a classe PainelDivulgacao() esteja criada no seu código.
         self.add_view(PainelDivulgacao())
 
+
+# --- INICIALIZAÇÃO DO BOT ---
+# O Token e a instância do bot ficam fora da classe, encostados na margem esquerda.
+TOKEN = os.getenv("TOKEN_JP")
+
 bot = Bot()
+
+# Para rodar o bot no final do arquivo:
+# bot.run(TOKEN)
 
 # --- MODAIS ---
 
