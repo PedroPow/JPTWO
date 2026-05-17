@@ -139,7 +139,7 @@ class PainelDivulgacao(discord.ui.View):
         
         if not cargo_criador or cargo_criador not in interaction.user.roles:
             embed_negado = discord.Embed(
-                description="❌ Você não tem permissão para usar este painel. Apenas Criadores podem divulgar.",
+                description="❌ Você não tem permissão para usar este painel. Apenas Criadores podem divulgar.\n Cargo necessário: <@&1502777759863144526>",
                 color=0xFF0000
             )
             await interaction.response.send_message(embed=embed_negado, ephemeral=True)
@@ -201,8 +201,8 @@ class PainelDivulgacao(discord.ui.View):
             await interaction.response.send_message(embed=embed_sucesso, ephemeral=True)
 
         except Exception as e:
-            print(e)
-            await interaction.response.send_message("Ocorreu um erro ao tentar fechar a live.", ephemeral=True)
+        print(e)
+        await interaction.response.send_message("Ocorreu um erro ao tentar fechar a live.", ephemeral=True)
 
     @discord.ui.button(label="Divulgar Vídeo", style=discord.ButtonStyle.gray, emoji="<:PLAY:1505319924841582693>", custom_id="btn_divulgar_video")
     async def divulgar_video(self, interaction: discord.Interaction, button: discord.ui.Button):
