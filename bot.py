@@ -108,7 +108,7 @@ class ModalVideo(discord.ui.Modal, title="📹 Divulgar Novo Vídeo"):
 
         embed_video = discord.Embed(
             title="`🟢` `Vídeo Novo`",
-            description=f"{desc_val}\n\n **Assista aqui:** **{link_val}**",
+            description=f"ㅤ\n{desc_val}\n\n **Assista aqui:** \n**{link_val}**",
             color=0xFF0000
         )
 
@@ -182,9 +182,9 @@ class PainelDivulgacao(discord.ui.View):
                 color=0xFF0000
             )
             
-            # Mantém o autor se ele existir
-            if embed_original.author:
-                embed_atualizado.set_author(name=embed_original.author.name, icon_url=embed_original.author.icon_url)
+        # Mantém o autor se ele existir
+        if embed_original.author:
+            embed_atualizado.set_author(name=embed_original.author.name, icon_url=embed_original.author.icon_url)
 
             # FORÇA A MANUTENÇÃO DA THUMBNAIL, IMAGE E FOOTER DESEJADOS
             embed_atualizado.set_thumbnail(url="https://cdn.discordapp.com/attachments/1444735189765849320/1503019230910746654/GIF_PERI.gif?ex=6a09bc3d&is=6a086abd&hm=4e07820a343bdd5a497b9f021dbc6b6d52aea9f9394b15ffb18eaf771be9f2d1&")
