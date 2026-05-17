@@ -108,7 +108,7 @@ class ModalVideo(discord.ui.Modal, title="📹 Divulgar Novo Vídeo"):
 
         embed_video = discord.Embed(
             title="`🟢` `Vídeo Novo`",
-            description=f"ㅤ\n{desc_val}\n\n **Assista aqui:** \n**{link_val}**",
+            description=f"{desc_val}\n\n **Assista aqui:** \n**{link_val}**",
             color=0xFF0000
         )
 
@@ -201,8 +201,8 @@ class PainelDivulgacao(discord.ui.View):
             await interaction.response.send_message(embed=embed_sucesso, ephemeral=True)
 
         except Exception as e:
-        print(e)
-        await interaction.response.send_message("Ocorreu um erro ao tentar fechar a live.", ephemeral=True)
+            print(e)
+            await interaction.response.send_message("Ocorreu um erro ao tentar fechar a live.", ephemeral=True)
 
     @discord.ui.button(label="Divulgar Vídeo", style=discord.ButtonStyle.gray, emoji="<:PLAY:1505319924841582693>", custom_id="btn_divulgar_video")
     async def divulgar_video(self, interaction: discord.Interaction, button: discord.ui.Button):
