@@ -13,6 +13,8 @@ CONFIG = {
     "CANAL_DIVULGACAO_VIDEO": 1502777768058814509, # Substitua pelo ID do canal de vídeos (Número)
     "CARGO_LIVE_ON": 1502777759863144525,          # Substitua pelo ID do cargo Live On (Número)
 
+    "CARGO_VISITANTE_ID": 1502777759863144520, # Substitua pelo ID do cargo de visitante (Número)
+
     "MSG_PADRAO_LIVE": "**Vem pra live na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**",
     
     "MSG_PADRAO_VIDEO": "**Vem conferir o novo vídeo na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**"
@@ -38,6 +40,17 @@ class Bot(commands.Bot):
         # Registra a View persistente para os botões continuarem funcionando se o bot reiniciar
         # NOTA: Certifique-se de que a classe PainelDivulgacao() esteja criada no seu código.
         self.add_view(PainelDivulgacao())
+
+    async def on_member_join(self, member: discord.Member):
+            try:
+                cargo_visitante = member.guild.get_role(CONFIG["CARGO_VISITANTE_ID"])
+                if cargo_visitante:
+                    await member.add_roles(cargo_visitante)
+                    print(f"✅ Cargo Visitante entregue para: {member.name}")
+                else:
+                    print(f"⚠️ Erro: O ID do cargo de visitante não foi encontrado no servidor.")
+            except Exception as e:
+                print(f"❌ Não foi possível dar o cargo para {member.name}. Erro: {e}")        
 
 
 # --- INICIALIZAÇÃO DO BOT ---
