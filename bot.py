@@ -9,20 +9,20 @@ load_dotenv()
 
 # --- CONFIGURAÇÕES DO BOT (Substitua pelos seus IDs) ---
 CONFIG = {
-    "CANAL_DIVULGACAO_LIVE": 1502777768058814510,  # ID do canal de lives (Número)
-    "CANAL_DIVULGACAO_VIDEO": 1502777768058814509, # ID do canal de vídeos (Número)
-    "CARGO_LIVE_ON": 1502777759863144525,          # ID do cargo Live On (Número)
-    "CARGO_VISITANTE_ID": 1502777759863144520,     # ID do cargo de visitante (Número)
+    "CANAL_DIVULGACAO_LIVE": 1502777768058814510,  # Substitua pelo ID do canal de lives (Número)
+    "CANAL_DIVULGACAO_VIDEO": 1502777768058814509, # Substitua pelo ID do canal de vídeos (Número)
+    "CARGO_LIVE_ON": 1502777759863144525,          # Substitua pelo ID do cargo Live On (Número)
+    "CARGO_VISITANTE_ID": 1502777759863144520,     # Substitua pelo ID do cargo de visitante (Número)
 
     "MSG_PADRAO_LIVE": "**Vem pra live na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**",
+    
     "MSG_PADRAO_VIDEO": "**Vem conferir o novo vídeo na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**"
 }
 
 # Banco de dados temporário para rastrear as lives ativas {user_id: message_id}
 lives_ativas = {}
 
-# RegExp atualizada para aceitar kwai.com, kwai-video.com e s.kwai.app (links de celular)
-# RegExp corrigida e simplificada para aceitar qualquer variação de link do Kwai e outras plataformas
+# RegExp CORRIGIDA: Agora aceita 'kwai' em qualquer formato de link (celular, PC, etc.)
 RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai)', re.IGNORECASE)
 
 
@@ -59,7 +59,7 @@ bot = Bot()
 # --- MODAIS ---
 
 class ModalLive(discord.ui.Modal, title="🚀 Iniciar Nova Live"):
-    link = discord.ui.TextInput(label="Link da Live", placeholder="https://kwai.com/@username ou link do app", style=discord.TextStyle.short, required=True)
+    link = discord.ui.TextInput(label="Link da Live", placeholder="https://kwai-video.com/... ou outra plataforma", style=discord.TextStyle.short, required=True)
     descricao = discord.ui.TextInput(label="Descrição (Opcional)", placeholder="Descreva sua live...", style=discord.TextStyle.long, required=False)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -67,7 +67,7 @@ class ModalLive(discord.ui.Modal, title="🚀 Iniciar Nova Live"):
         desc_val = self.descricao.value if self.descricao.value else CONFIG["MSG_PADRAO_LIVE"]
 
         if not RE_PLATAFORMAS.search(link_val):
-            embed_erro = discord.Embed(description="⚠️ Link inválido! Use apenas links de plataformas permitidas.", color=0xFF0000)
+            embed_erro = discord.Embed(description="⚠️ Link inválido! Use apenas links de plataformas permitidas (TikTok, Instagram, YouTube, Kick, Facebook, Kwai).", color=0xFF0000)
             return await interaction.response.send_message(embed=embed_erro, ephemeral=True)
 
         canal_divulgacao = interaction.guild.get_channel(CONFIG["CANAL_DIVULGACAO_LIVE"])
@@ -83,13 +83,9 @@ class ModalLive(discord.ui.Modal, title="🚀 Iniciar Nova Live"):
         embed_live.set_image(url="https://cdn.discordapp.com/attachments/1444735189765849320/1505098549610811462/Criadores_JP_2.png?ex=6a0a0c81&is=6a08bb01&hm=51d6cf0ae416af4e6f37516d9a39ab6bb4f6be70166faa799f9f36acdaa74e2b&")
         embed_live.set_footer(text="Jardim Peri RP - Todos os direitos reservados", icon_url="https://cdn.discordapp.com/attachments/1444735189765849320/1505074583601025114/emoji_JP.webp?ex=6a094d6f&is=6a07fbef&hm=5bd4e53ca8c4b641133b0f855affa243f440b86cdb33410d7579215042d8eba3&")
 
-        # Envia o anúncio
         msg = await canal_divulgacao.send(content=f"@everyone  | {interaction.user.mention} está em live!", embed=embed_live)
-        
-        # Salva o ID da mensagem para fechar depois
         lives_ativas[interaction.user.id] = msg.id
 
-        # Atribui o cargo
         if cargo_live:
             await interaction.user.add_roles(cargo_live)
 
@@ -98,7 +94,7 @@ class ModalLive(discord.ui.Modal, title="🚀 Iniciar Nova Live"):
 
 
 class ModalVideo(discord.ui.Modal, title="📹 Divulgar Novo Vídeo"):
-    link = discord.ui.TextInput(label="Link do Vídeo", placeholder="https://kwai.com/@username ou link do app", style=discord.TextStyle.short, required=True)
+    link = discord.ui.TextInput(label="Link do Vídeo", placeholder="https://kwai-video.com/... ou outra plataforma", style=discord.TextStyle.short, required=True)
     descricao = discord.ui.TextInput(label="Descrição (Opcional)", placeholder="Descreva seu vídeo...", style=discord.TextStyle.long, required=False)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -106,7 +102,7 @@ class ModalVideo(discord.ui.Modal, title="📹 Divulgar Novo Vídeo"):
         desc_val = self.descricao.value if self.descricao.value else CONFIG["MSG_PADRAO_VIDEO"]
 
         if not RE_PLATAFORMAS.search(link_val):
-            embed_erro = discord.Embed(description="⚠️ Link inválido! Use apenas links de plataformas permitidas.", color=0xFF0000)
+            embed_erro = discord.Embed(description="⚠️ Link inválido! Use apenas links de plataformas permitidas (TikTok, Instagram, YouTube, Kick, Facebook, Kwai).", color=0xFF0000)
             return await interaction.response.send_message(embed=embed_erro, ephemeral=True)
 
         canal_divulgacao = interaction.guild.get_channel(CONFIG["CANAL_DIVULGACAO_VIDEO"])
@@ -123,7 +119,7 @@ class ModalVideo(discord.ui.Modal, title="📹 Divulgar Novo Vídeo"):
 
         await canal_divulgacao.send(content=f"@everyone  | {interaction.user.mention} divulgou um novo vídeo!", embed=embed_video)
 
-        embed_sucesso = discord.Embed(description="✅ Vídeo divulgado com sucesso. <#1502777768058814 group 509>", color=0xFF0000)
+        embed_sucesso = discord.Embed(description="✅ Vídeo divulgado com sucesso. <#1502777768058814509>", color=0xFF0000)
         await interaction.response.send_message(embed=embed_sucesso, ephemeral=True)
 
 
@@ -132,7 +128,7 @@ CARGO_CRIADOR_ID = 1502777759863144526
 
 class PainelDivulgacao(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=None) # Faz os botões serem persistentes (nunca expiram)
+        super().__init__(timeout=None)
 
     async def verificar_permissao(self, interaction: discord.Interaction) -> bool:
         cargo_criador = interaction.guild.get_role(CARGO_CRIADOR_ID)
@@ -167,11 +163,9 @@ class PainelDivulgacao(discord.ui.View):
         canal_divulgacao = interaction.guild.get_channel(CONFIG["CANAL_DIVULGACAO_LIVE"])
 
         try:
-            # Remove o cargo
             if cargo_live and cargo_live in interaction.user.roles:
                 await interaction.user.remove_roles(cargo_live)
 
-            # Atualiza o Embed para Offline
             msg_original = await canal_divulgacao.fetch_message(msg_id)
             embed_original = msg_original.embeds[0]
             
