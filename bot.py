@@ -17,14 +17,14 @@ CONFIG = {
 
     "MSG_PADRAO_LIVE": "**Vem pra live na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**",
     
-    "MSG_PADRAO_VIDEO": "**Vem conferir o novo vídeo na cidade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**"
+    "MSG_PADRAO_VIDEO": "**Vem conferir o novo vídeo na ci dade JardimPeri®**\n  **Segue, Curte, Comente e Compartilhe**"
 }
 
 # Banco de dados temporário para rastrear as lives ativas {user_id: message_id}
 lives_ativas = {}
 
 # RegExp para validar as plataformas permitidas
-RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com)', re.IGNORECASE)
+RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai\.com)', re.IGNORECASE)
 
 
 class Bot(commands.Bot):
