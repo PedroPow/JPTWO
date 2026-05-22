@@ -22,10 +22,8 @@ CONFIG = {
 lives_ativas = {}
 
 # RegExp atualizada para aceitar kwai.com, kwai-video.com e s.kwai.app (links de celular)
-RE_PLATAFORMAS = re.compile(
-    r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai\.com|kwai-video\.com|kwai\.app)', 
-    re.IGNORECASE
-)
+# RegExp corrigida e simplificada para aceitar qualquer variação de link do Kwai e outras plataformas
+RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai)', re.IGNORECASE)
 
 
 class Bot(commands.Bot):
