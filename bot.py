@@ -50,7 +50,7 @@ lives_ativas = {}
 
 # RegExp para validar as plataformas permitidas
 
-RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai\.com)', re.IGNORECASE)
+RE_PLATAFORMAS = re.compile(r'(tiktok\.com|instagram\.com|youtube\.com|youtu\.be|kick\.com|facebook\.com|kwai)', re.IGNORECASE)
 
 
 
